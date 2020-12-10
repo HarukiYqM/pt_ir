@@ -23,17 +23,17 @@ def update_argparser(parser):
     parser.add_argument(
       '--n_resblocks',
       help='Number of residual blocks in networks.',
-      default=16,
+      default=32,
       type=int)
     parser.add_argument(
       '--n_feats',
       help='Channel width.',
-      default=64,
+      default=256,
       type=int)
     parser.add_argument(
       '--res_scale',
-      help='rescale residual connection',
-      default=1,
+      help='rescale residual connections',
+      default=0.1,
       type=float)
     parser.add_argument(
       '--rgb_range',
@@ -47,9 +47,9 @@ def update_argparser(parser):
       type=int)
     if args.dataset.startswith('div2k'):
         parser.set_defaults(
-        train_epochs=30,
-        learning_rate_milestones=(20, 25),
-        learning_rate_decay=0.2,
+        train_epochs=50,
+        learning_rate_milestones=(10,20,30,40),
+        learning_rate_decay=0.5,
         save_checkpoints_epochs=1,
         lr_patch_size=48,
         train_temporal_size=1,
@@ -107,7 +107,7 @@ class MODEL(nn.Module):
         rgb_mean = (0.4488, 0.4371, 0.4040)
         rgb_std = (1.0, 1.0, 1.0)
         self.sub_mean = MeanShift(args.rgb_range, rgb_mean, rgb_std)
-        self.msa = PyramidAttention(channel=n_feats, reduction=4,res_scale=args.res_scale);         
+        self.msa = PyramidAttention(channel=n_feats, reduction=8,res_scale=args.res_scale);         
         # define head module
         m_head = [conv(args.n_colors, n_feats, kernel_size)]
 

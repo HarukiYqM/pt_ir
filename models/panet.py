@@ -47,8 +47,8 @@ def update_argparser(parser):
       type=int)
     if args.dataset.startswith('div2k'):
         parser.set_defaults(
-        train_epochs=50,
-        learning_rate_milestones=(10,20,30,40),
+        train_epochs=32,
+        learning_rate_milestones=(8,16,24),
         learning_rate_decay=0.5,
         save_checkpoints_epochs=1,
         lr_patch_size=48,
